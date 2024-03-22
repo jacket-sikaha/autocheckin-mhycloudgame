@@ -1,0 +1,2 @@
+# autocheckin-mhycloudgame
+基于nextjs14开发的云原神自动签到程序
