@@ -17,10 +17,8 @@ export async function POST(request: Request) {
     }
     const appVersion = await AppVersion();
     const headers = makeHeader(appVersion);
-    const [wallet, list] = await Promise.all([
-      Wallet(headers),
-      ListNotification(headers),
-    ]);
+    const wallet = await Wallet(headers);
+    const list = await ListNotification(headers);
     if (!wallet || !list) {
       const msg = "登录已失效，请重新登录并更新配置！";
       const msgResponse: messageType = {
@@ -36,10 +34,11 @@ export async function POST(request: Request) {
     }
     const free_time = +wallet.free_time.free_time;
     const over_freetime = +wallet.free_time.over_freetime;
-    if (list.length === 0 && over_freetime === 0) {
+    if (list.length === 0) {
       const msg =
         "获取签到情况成功！今天是否已经签到过了呢？\n" +
-        `您目前的免费时长为:${free_time} 分钟。`;
+        `您目前的免费时长为:${free_time} 分钟。
+        超过上限时长为:${over_freetime} 分钟。`;
       const msgResponse: messageType = {
         msg: "already checkin",
         user: process.env.EMAIL_TO,
@@ -53,17 +52,23 @@ export async function POST(request: Request) {
       return Response.json({ msg });
     }
     // 检查签到时长是否到达上限
+    // 超过600分钟上限还是会弹窗
     const _msg = JSON.parse(list[0].msg);
-    if (_msg["over_num"] > 0 || over_freetime > 0) {
-      const msg =
-        `获取签到情况成功！当前免费时长已经达到上限！接口返回签到情况为${list[0].msg}\n` +
-        `您目前的免费时长为:${free_time} 分钟。\n` +
-        `超过上限时长为:${_msg["over_num"] ?? over_freetime} 分钟。\n`;
+    if (_msg["over_num"] > 0) {
+      const msg = `获取签到情况成功！当前免费时长已经达到上限！接口返回签到情况为${
+        list[0].msg
+      }
+        您目前的免费时长为:${free_time} 分钟。
+        超过上限时长为:${_msg["over_num"] ?? over_freetime} 分钟。`;
       const msgResponse: messageType = {
         msg: "over num",
         _msg: [wallet, _msg],
         user: process.env.EMAIL_TO,
       };
+      if (_msg["over_num"] < 15) {
+        // 对于还差0-14min就达到600min情况，还需要确认签到
+        await Promise.all(list.map(({ id }) => AckNotification(headers, id)));
+      }
       logger.info(msgResponse);
       await Promise.all([
         sendCheckinEMail(true, msg, process.env.EMAIL_TO),

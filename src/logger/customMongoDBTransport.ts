@@ -1,7 +1,6 @@
-import { insertLog, testinsertLog } from "@/mongodb";
+import { insertLog, insertErrorLog } from "@/mongodb";
 import Transport from "winston-transport";
 import util from "util";
-import { sendMsgToKafka } from "@/kafka";
 
 //
 // Inherit from `winston-transport` so you can take advantage
@@ -33,14 +32,10 @@ export default class CustomMongoDBTransport extends Transport {
     };
     try {
       if (info.level === "error") {
-        await testinsertLog(info);
+        await insertErrorLog(info);
       } else {
         await insertLog(logData);
       }
-      // await Promise.all([
-      //   insertLog(logData),
-      //   sendMsgToKafka({ ...logData, source: "sikara" }),
-      // ]);
       console.log("info", info);
       callback(null, true);
     } catch (error) {

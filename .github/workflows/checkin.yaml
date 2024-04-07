@@ -1,0 +1,19 @@
+name: 定时任务
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 */5 * * *"
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: Run shell script
+        run: bash job.sh
