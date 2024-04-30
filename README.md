@@ -30,8 +30,4 @@ MONGODB_USER = xxxx;
 MONGODB_PASSWD = xxxx;
 ```
 
-# [配置教程参考](https://bili33.top/posts/MHYY-AutoCheckin-Manual-Gen2)
-
-- 基于 nextjs14 开发的云原神自动签到程序
-- 采用 github action schedule 形式调用 nextjs 项目接口，完成签到
-  > > > > > > > 240fee9934dec74cfa2109e5d705bc8403aead8d
+[配置教程参考](https://bili33.top/posts/MHYY-AutoCheckin-Manual-Gen2)
