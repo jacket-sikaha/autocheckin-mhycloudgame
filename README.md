@@ -1,2 +1,31 @@
 # autocheckin-mhycloudgame
-基于nextjs14开发的云原神自动签到程序
+
+基于 nextjs14 开发的云原神自动签到程序
+
+```javascript
+// 邮箱通知服务
+SMTP_USER = xxxxx; // SMTP服务用户名
+
+SMTP_PASSWORD = xxxx; // SMTP服务用户对应密钥
+
+SMTP_HOST = xxxx; // SMTP服务host
+
+SMTP_PORT = xxx; // SMTP服务port
+
+EMAIL_FROM = xxxxx; // 发email人
+EMAIL_TO = xxxxx; // 接收email人
+
+// mhy账号签到所需携带信息 
+// 参考 https://bili33.top/posts/MHYY-AutoCheckin-Manual-Gen2
+X_RPC_COMBO_TOKEN = xxxxx;
+X_RPC_CLIENT_TYPE = xxxx;
+X_RPC_SYS_VERSION = "xxxxx";
+X_RPC_DEVICE_ID = "xxxx";
+X_RPC_DEVICE_NAME = "xxxx";
+X_RPC_DEVICE_MODEL = "xxxx";
+
+// 日志存储服务信息（非必填）
+MONGODB_USER = xxxx;
+MONGODB_PASSWD = xxxx;
+```
+[配置教程参考](https://bili33.top/posts/MHYY-AutoCheckin-Manual-Gen2)
