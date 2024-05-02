@@ -31,3 +31,26 @@ MONGODB_PASSWD = xxxx;
 ```
 
 [配置教程参考](https://bili33.top/posts/MHYY-AutoCheckin-Manual-Gen2)
+
+```yml
+name: 定时任务
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 */5 * * *"
+    #执行时间按自己要求定义，但GitHub执行action与实际时间是会有一定延迟的
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: Run shell script
+        run: bash job.sh
+```
