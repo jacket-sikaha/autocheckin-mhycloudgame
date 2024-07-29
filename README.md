@@ -56,4 +56,4 @@ jobs:
 ```
 
 #### 我的服务运行记录
-      [https://cron-rouge.vercel.app/table](https://cron-rouge.vercel.app/table)
+[https://cron-rouge.vercel.app/table](https://cron-rouge.vercel.app/table)
